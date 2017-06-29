@@ -29,7 +29,7 @@ var AppInfo = {
 	m_app_name_capital  : null,
 	firstcap            : 1, // const ==> first letter capitalised
 	eApp                : new ZinEnum( newObjectWithKeysMatchingValues(
-	                      'firefox', 'thunderbird', 'thunderbird2', 'thunderbird3', 'seamonkey', 'postbox', 'spicebird', 'other')),
+	                      'firefox', 'thunderbird', 'thunderbird2', 'thunderbird3', 'seamonkey', 'postbox', 'other')),
 	app_version : function() {
 		if (!this.m_app_version) {
 			let appInfo = Cc["@mozilla.org/xre/app-info;1"].getService(Ci.nsIXULAppInfo);
@@ -45,7 +45,6 @@ var AppInfo = {
 			const SM_ID = "{92650c4d-4b8e-4d2a-b7eb-24ecf4f6b63a}";
 			const PB_ID = "postbox@postbox-inc.com";                 // Postbox         (paid)
 			const PE_ID = "express@postbox-inc.com";                 // Postbox Express (free)
-			const SB_ID = "{ee53ece0-255c-4cc6-8a7e-81a8b6e5ba2c}";
 			let appInfo = Cc["@mozilla.org/xre/app-info;1"].getService(Ci.nsIXULAppInfo);
 			switch(appInfo.ID) {
 				case FF_ID: this.m_app_name = this.eApp.firefox;     break;
@@ -53,7 +52,6 @@ var AppInfo = {
 				case SM_ID: this.m_app_name = this.eApp.seamonkey;   break;
 				case PE_ID:
 				case PB_ID: this.m_app_name = this.eApp.postbox;     break;
-				case SB_ID: this.m_app_name = this.eApp.spicebird;   break;
 				default:    this.m_app_name = this.eApp.other;       break;
 			}
 		}
@@ -95,8 +93,7 @@ var AppInfo = {
 		let ret      = app_name;
 
 		if ((app_name == this.eApp.thunderbird) ||
-		    (app_name == this.eApp.seamonkey) ||
-		    (app_name == this.eApp.spicebird && this.app_version() >= "0.8"))
+		    (app_name == this.eApp.seamonkey))
 			ret = ("@mozilla.org/abmanager;1" in Cc) ? this.eApp.thunderbird3 : this.eApp.thunderbird2;
 
 		return ret;

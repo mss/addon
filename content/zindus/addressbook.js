@@ -25,13 +25,11 @@ function AddressBookTb()  { AddressBook.call(this); this.m_nsIRDFService = null;
 function AddressBookTb2() { AddressBookTb.call(this);  }
 function AddressBookTb3() { AddressBookTb.call(this);  }
 function AddressBookPb()  { AddressBookTb3.call(this); }
-function AddressBookSb()  { AddressBookTb3.call(this); }
 
 AddressBookTb.prototype  = new AddressBook();
 AddressBookTb2.prototype = new AddressBookTb();
 AddressBookTb3.prototype = new AddressBookTb();
 AddressBookPb.prototype  = new AddressBookTb3();
-AddressBookSb.prototype  = new AddressBookTb3();
 
 includejs("addressbookff.js");
 
@@ -66,7 +64,6 @@ AddressBook.new = function()
 		case AppInfo.eApp.thunderbird3: ret = new AddressBookTb3(); break;
 		case AppInfo.eApp.firefox:      ret = new AddressBookFf();  break;
 		case AppInfo.eApp.postbox:      ret = new AddressBookPb();  break;
-		case AppInfo.eApp.spicebird:    ret = new AddressBookSb();  break;
 		default:             ret = new AddressBookTb2(); break;
 	}
 
@@ -1024,30 +1021,15 @@ AddressBookPb.prototype.forEachCardGenerator = function(uri, functor, yield_coun
 	yield false;
 }
 
-// Postbox and SpiceBird forked Thunderbird somewhere between Tb2 and Tb3
-// here we adjust methods in each AddressBook subclass to suit.
+// Postbox forked Thunderbird somewhere between Tb2 and Tb3
+// here we adjust methods in the AddressBook subclass to suit.
 {
-	let a_pb_methods  = newObjectWithKeys('lookupCard', 'forEachCardGenerator');
 	let a_tb2_methods = newObjectWithKeys('nsIAbDirectory', 'nsIAddressBook', 'addCard', 'updateCard', 'setCardProperties',
 	                                  'setCardAttributes', 'getCardAttributes', 'getCardProperty', 'deleteAddressBook', 'deleteCards',
 									  'getAddressBookIterator');
 	let i;
-
-	// Postbox
-	//
 	for (i in a_tb2_methods)
 		AddressBookPb.prototype[i] = AddressBookTb2.prototype[i];
-
-	// SpiceBird
-	//
-	delete a_tb2_methods['deleteCards'];
-	delete a_tb2_methods['deleteAddressBook'];
-
-	for (i in a_tb2_methods)
-		AddressBookSb.prototype[i] = AddressBookTb2.prototype[i];
-
-	for (i in a_pb_methods)
-		AddressBookSb.prototype[i] = AddressBookPb.prototype[i];
 }
 
 function AddressBookImportantProperties(uri, prefId)
