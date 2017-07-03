@@ -43,12 +43,10 @@ var AppInfo = {
 			const TB_ID = "{3550f703-e582-4d05-9a08-453d09bdfdc6}";
 			const SM_ID = "{92650c4d-4b8e-4d2a-b7eb-24ecf4f6b63a}";
 			const PB_ID = "postbox@postbox-inc.com";                 // Postbox         (paid)
-			const PE_ID = "express@postbox-inc.com";                 // Postbox Express (free)
 			let appInfo = Cc["@mozilla.org/xre/app-info;1"].getService(Ci.nsIXULAppInfo);
 			switch(appInfo.ID) {
 				case TB_ID: this.m_app_name = this.eApp.thunderbird; break;
 				case SM_ID: this.m_app_name = this.eApp.seamonkey;   break;
-				case PE_ID:
 				case PB_ID: this.m_app_name = this.eApp.postbox;     break;
 				default:    this.m_app_name = this.eApp.other;       break;
 			}

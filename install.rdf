@@ -37,15 +37,6 @@
       </Description>
     </em:targetApplication>
 
-    <em:targetApplication>
-      <!-- Postbox Express -->
-      <Description>
-        <em:id>express@postbox-inc.com</em:id>
-        <em:minVersion>1.0.*</em:minVersion>   <!-- pe -->
-        <em:maxVersion>1.0.*</em:maxVersion>   <!-- pe -->
-      </Description>
-    </em:targetApplication>
-
     <em:name>Zindus</em:name>
     <em:optionsURL>chrome://zindus/content/configsettings.xul</em:optionsURL>
     <em:description>Google and Zimbra contact sync for Thunderbird.</em:description>
