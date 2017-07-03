@@ -960,8 +960,7 @@ function numeric_compare(a, b)
 function zinAlert(title_string_id, msg, win)
 {
 	let versionChecker = Cc["@mozilla.org/xpcom/version-comparator;1"].getService(Ci.nsIVersionComparator);
-	let is_prompts     = (typeof(AppInfo) == 'object') &&
-	                     ((AppInfo.app_name() == AppInfo.eApp.firefox) ||
+	let is_prompts     = (typeof(AppInfo) == 'object') && (
 				          (((AppInfo.app_name() == AppInfo.eApp.thunderbird) || (AppInfo.app_name() == AppInfo.eApp.seamonkey)) &&
 						    versionChecker.compare(AppInfo.app_version(), "3") >= 0));
 
@@ -1253,12 +1252,6 @@ function str_with_trailing(str, chr)
 	return str;
 }
 
-// the status + progress panels are visibile and updated in windows containing these ids.
-//
-function show_status_panel_in()
-{
-	return (AppInfo.app_name() == AppInfo.eApp.firefox) ? [ 'browser-bottombox' ] : [ 'folderPaneBox', 'addressbookWindow' ];
-}
 
 function AddToPrototype(o, p)
 {

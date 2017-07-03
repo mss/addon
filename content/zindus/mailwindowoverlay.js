@@ -41,12 +41,7 @@ ZinMailWindowOverlay.prototype.onLoad = function()
 	try
 	{
 		let app_name = AppInfo.app_name();
-		let messengerWindow;
-
-		if (app_name == AppInfo.eApp.firefox)
-			messengerWindow = document.getElementById("main-window");
-		else
-			messengerWindow = document.getElementById("messengerWindow");
+		let messengerWindow = document.getElementById("messengerWindow");
 
 		if (messengerWindow)
 		{

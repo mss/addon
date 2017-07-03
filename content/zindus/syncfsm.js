@@ -39,6 +39,7 @@ includejs("lso.js");
 includejs("zidbag.js");
 includejs("stopwatch.js");
 includejs("cookieobserver.js");
+includejs("json.js");
 
 const AUTO_INCREMENT_STARTS_AT = 256;  // the 'next' attribute of the AUTO_INCREMENT item starts at this value + 1.
 const ZM_FIRST_USER_ID         = 256;
@@ -1180,7 +1181,6 @@ SyncFsm.prototype.initialiseTbAddressbookGenerator = function()
 	let a_ids_to_remove;
 
 	switch (AppInfo.ab_version()) {
-		case AppInfo.eApp.firefox:      a_ids_to_remove = null;                                                                 break;
 		case AppInfo.eApp.thunderbird2: a_ids_to_remove = newObject(TBCARD_ATTRIBUTE_LUID, "");                                 break;
 		default:                        a_ids_to_remove = newObject(TBCARD_ATTRIBUTE_LUID, "", TBCARD_ATTRIBUTE_LUID_ITER, ""); break;
 	}
@@ -1205,15 +1205,14 @@ SyncFsm.prototype.initialiseTbAddressbookGenerator = function()
 
 	this.debug("initialiseTbAddressbookGenerator: aUri: " + aToString(aUri));
 
-	if (a_ids_to_remove)
-		for (var uri in aUri) {
-			this.debug("initialiseTbAddressbookGenerator: uri: " + uri);
+	for (var uri in aUri) {
+		this.debug("initialiseTbAddressbookGenerator: uri: " + uri);
 
-			let generator = addressbook.forEachCardGenerator(uri, functor_foreach_card, chunk_size('cards'));
+		let generator = addressbook.forEachCardGenerator(uri, functor_foreach_card, chunk_size('cards'));
 
-			while (generator.next())
-				yield true;
-		}
+		while (generator.next())
+			yield true;
+	}
 
 	yield false;
 }

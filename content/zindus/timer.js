@@ -26,7 +26,7 @@ function TimerFunctor(id_fsm_functor, on_finish_function, on_finish_function_arg
 	zinAssert(arguments.length == 3);
 
 	this.m_logger                 = newLogger("TimerFunctor"); // this.m_logger.level(Logger.NONE);
-	this.m_zwc                    = new WindowCollection(show_status_panel_in());
+	this.m_zwc                    = new WindowCollection([ 'folderPaneBox', 'addressbookWindow' ]);
 	this.m_a_zwc_functor          = new Object();
 	this.m_id_fsm_functor         = id_fsm_functor;
 	this.m_on_finish_function     = on_finish_function;

@@ -244,8 +244,6 @@ ConfigSettings.prototype.onCommand = function(id_target)
 
 		case "cs-button-reset":
 			Filesystem.removeZfcs();
-			if (AppInfo.app_name == AppInfo.eApp.firefox)
-				AddressBookFfStatic.db_drop_and_create();
 			LogAppenderStatic.rotate();
 			StatusBarState.update();
 			if (this.m_czss)
@@ -520,14 +518,15 @@ ConfigSettings.prototype.accountsTreeRefresh = function()
 
 		// Addressbook
 		//
-		if (AppInfo.app_name() != AppInfo.eApp.firefox) {
-			if (account.format_xx() == FORMAT_GD)
-				value = account.gd_sync_with == 'zg' ? FolderConverter.PREFIX_PRIMARY_ACCOUNT : this.m_addressbook.getPabName();
-			else
-				value = "        *";
-
-			ConfigSettingsStatic.appendCell(treerow, value);
+		if (account.format_xx() == FORMAT_GD)
+		{
+			value = account.gd_sync_with == 'zg' ? FolderConverter.PREFIX_PRIMARY_ACCOUNT : this.m_addressbook.getPabName();
 		}
+		else
+		{
+			value = "        *";
+		}
+		ConfigSettingsStatic.appendCell(treerow, value);
 
 		this.m_logger.debug("accountsTreeRefresh: treeitem at rowid: " + rowid + " account: " + account.username + " " + account.get('format'));
 

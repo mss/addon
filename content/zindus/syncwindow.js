@@ -30,7 +30,7 @@ function SyncWindow()
 	this.m_logger.debug("constructor starts");
 
 	this.m_payload   = null; // we keep it around so that we can pass the results back
-	this.m_zwc       = new WindowCollection(show_status_panel_in());
+	this.m_zwc       = new WindowCollection([ 'folderPaneBox', 'addressbookWindow' ]);
 	this.m_sfcd      = null;
 	this.m_grr       = new GoogleRuleRepeater();
 

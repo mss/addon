@@ -60,7 +60,6 @@ TestHarness.prototype.run = function()
 	// ret = ret && this.testAddressBookBugzilla432145Create();
 	// ret = ret && this.testAddressBookBugzilla432145Compare();
 	// ret = ret && this.testAddressBookBugzilla432145Delete();
-	// ret = ret && this.testAddressBookFf();
 	// ret = ret && this.testFeedCollection();
 	// ret = ret && this.testPermFromZfi();
 	// ret = ret && this.testFolderConverter();
@@ -977,114 +976,6 @@ TestHarness.prototype.testAddressBookBugzilla432145Populate = function(propertie
 		properties[i] = prefix + i + "-" + luid;
 
 	attributes[TBCARD_ATTRIBUTE_LUID] = luid;
-}
-
-TestHarness.prototype.testAddressBookFf = function()
-{
-	zinAssert(AppInfo.ab_version() == AppInfo.eApp.firefox);
-
-	if (!AddressBookFfStatic.db_is_healthy())
-		AddressBookFfStatic.db_drop_and_create();
-
-	let addressbook = AddressBook.new();
-	let contact_converter = this.newContactConverter();
-	let ab_name = 'fred';
-	let functor, abCard, abfCard;
-
-	addressbook.contact_converter(contact_converter);
-
-	// clean up after a previous test that failed
-	//
-	functor = {
-		run: function(elem) {
-			if (elem.dirName == ab_name)
-				addressbook.deleteAddressBook(elem.URI);
-			return true;
-		}
-	};
-
-	addressbook.forEachAddressBook(functor);
-
-	let abip = addressbook.newAddressBook(ab_name);
-
-	function is_match_p_a(abCard, properties, attributes) {
-		zinAssert(addressbook.getCardProperty(abCard, 'PrimaryEmail') == properties['PrimaryEmail']);
-		zinAssert(isMatchObjects(addressbook.getCardProperties(abCard), properties));
-		zinAssert(addressbook.getCardAttributes(abCard)['zindus-xxx'] == attributes['zindus-xxx']);
-	}
-
-	let properties = { PrimaryEmail : 'a@b.com', Notes : 'hello world 1' };
-	let attributes = { 'zindus-xxx' : '123' };
-
-	abfCard = addressbook.addCard(abip.uri(), properties, { 'zindus-xxx' : '123' });
-	abCard = abfCard.abCard();
-
-	is_match_p_a(abCard, properties, attributes);
-
-	abfCard = addressbook.addCard(abip.uri(), { PrimaryEmail : 'c@d.com', Notes : 'hello world 2' }, { 'zindus-xxx' : '456' });
-	abCard = abfCard.abCard();
-
-	let properties2 = { PrimaryEmail : 'f@updated.com' };
-	let attributes2 = { 'zindus-xxx' : '111' };
-	addressbook.updateCard(abCard, abip.uri(), properties2, attributes2, FORMAT_TB);
-	is_match_p_a(abCard, properties2, attributes2);
-
-	let attrs = addressbook.getCardAttributes(abCard);
-	abCard = addressbook.lookupCard(abip.uri(), TBCARD_ATTRIBUTE_LUID, attrs[TBCARD_ATTRIBUTE_LUID]);
-	is_match_p_a(abCard, properties2, attributes2);
-	this.m_logger.debug("lookupCard: returns: " + (abCard ? abCard.toString() : "null"));
-
-	// lookup by id
-	//
-	abCard = addressbook.lookupCard(abip.uri(), TBCARD_ATTRIBUTE_LUID, abCard.id());
-	is_match_p_a(abCard, properties2, attributes2);
-
-	// test deleteCard
-	//
-	abfCard = addressbook.addCard(abip.uri(), { PrimaryEmail : 'to-be-deleted@d.com' }, { 'zindus-xxx' : '111' });
-	abCard = abfCard.abCard();
-	let id1 = abfCard.id();
-	let abfCard2 = addressbook.addCard(abip.uri(), { PrimaryEmail : 'to-be-deleted-2@dd.com' }, { 'zindus-xxx' : '222' });
-	let abCard2 = abfCard2.abCard();
-	let id2 = abfCard2.id();
-	addressbook.deleteCards(abip.uri(), [ abCard, abCard2 ]);
-	zinAssert(!addressbook.lookupCard(abip.uri(), TBCARD_ATTRIBUTE_LUID, id1));
-	zinAssert(!addressbook.lookupCard(abip.uri(), TBCARD_ATTRIBUTE_LUID, id2));
-
-	var functor_card = {
-		run: function(uri, card) {
-			logger().debug("card: " + card.toString());
-			return true;
-		}
-	};
-
-	functor = {
-		run: function(elem) {
-			logger().debug("elem: " + elem.toString());
-			addressbook.forEachCard(elem.URI, functor_card);
-			return true;
-		}
-	};
-
-	addressbook.forEachAddressBook(functor);
-
-	// test renameAddressBook
-	//
-	let ab_name2 = "joe";
-	addressbook.renameAddressBook(abip.uri(), ab_name2);
-	zinAssert(addressbook.getAddressBookUriByName(ab_name2));
-	zinAssert(addressbook.getAddressBookUriByName(ab_name2) == abip.uri());
-	zinAssert(!addressbook.getAddressBookUriByName(ab_name));
-
-	// test deleteAddressBook
-	//
-	abCard = addressbook.addCard(abip.uri(), { PrimaryEmail : 'to-be-deleted@d.com' }, { 'zindus-xxx' : '111' });
-	let id3 = abCard.id();
-	addressbook.deleteAddressBook(abip.uri());
-	zinAssert(!addressbook.getAddressBookUriByName(ab_name2));
-	zinAssert(!addressbook.lookupCard(abip.uri(), TBCARD_ATTRIBUTE_LUID, id3));
-
-	return true;
 }
 
 

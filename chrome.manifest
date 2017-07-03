@@ -36,8 +36,4 @@ overlay chrome://messenger/content/mailWindowOverlay.xul           chrome://zind
 # postbox
 overlay chrome://messenger/content/mailWindowOverlay.xul           chrome://zindus/content/mailwindowoverlay-tb.xul application=postbox@postbox-inc.com
 
-# firefox
-overlay chrome://browser/content/browser.xul                       chrome://zindus/content/mailwindowoverlay.xul    application={ec8030f7-c20a-464f-9b0e-13a3a9e97384}
-overlay chrome://browser/content/browser.xul                       chrome://zindus/content/mailwindowoverlay-ff.xul application={ec8030f7-c20a-464f-9b0e-13a3a9e97384}
-
 style   chrome://global/content/customizeToolbar.xul               chrome://zindus/skin/zindus.css

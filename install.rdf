@@ -19,24 +19,6 @@
       </Description>
     </em:targetApplication>
 
-    <!-- Notes on the experiment with Firefox Contact Sync:
-         - the addon installs into firefox and sync with Google works fine
-         - firefox doesn't have a built-in contacts store
-         - the addon uses an SQLite analogue of the Thunderbird addressbook (addressbookff.js)
-         - the use of mozStorage means the addon needs gecko 1.9.1 ==> firefox 3.5 at a minimum
-         - mozilla's release of 'Firefox Contacts' has killed my interest in pursuing this further
-           (even though they are a ways away from two-way sync)
-         - if the intent was to support firefox properly we'd want a firefox comment here that fed the build
-           of the corresponding xml element in update.rdf
-    <em:targetApplication>
-      <Description>
-        <em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
-        <em:minVersion>3.5</em:minVersion>
-        <em:maxVersion>3.6.*</em:maxVersion>
-      </Description>
-    </em:targetApplication>
-    -->
-
     <em:targetApplication>
       <!-- Seamonkey -->
       <Description>

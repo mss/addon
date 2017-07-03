@@ -31,8 +31,6 @@ AddressBookTb2.prototype = new AddressBookTb();
 AddressBookTb3.prototype = new AddressBookTb();
 AddressBookPb.prototype  = new AddressBookTb3();
 
-includejs("addressbookff.js");
-
 const kPABDirectory           = 2;                               // dirType ==> mork address book
 const kMDBDirectoryRoot       = "moz-abmdbdirectory://";         // see: nsIAbMDBDirectory.idl
 const kPersonalAddressbookURI = kMDBDirectoryRoot + "abook.mab"; // see: resources/content/abCommon.js
@@ -53,16 +51,9 @@ AddressBook.new = function()
 	let version = AppInfo.ab_version();
 	let ret;
 
-	if (version == AppInfo.eApp.firefox && !AddressBookFfStatic.db_is_healthy()) {
-		// this is effectively a reset...
-		Filesystem.removeZfcs();
-		AddressBookFfStatic.db_drop_and_create();
-	}
-
 	switch (version) {
 		case AppInfo.eApp.thunderbird2: ret = new AddressBookTb2(); break;
 		case AppInfo.eApp.thunderbird3: ret = new AddressBookTb3(); break;
-		case AppInfo.eApp.firefox:      ret = new AddressBookFf();  break;
 		case AppInfo.eApp.postbox:      ret = new AddressBookPb();  break;
 		default:             ret = new AddressBookTb2(); break;
 	}

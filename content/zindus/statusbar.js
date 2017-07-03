@@ -191,7 +191,7 @@ var StatusBarState = {
 		logger().debug("StatusBarState: update: status: " + obj[status] + " (" + status + ") tooltip: " + tooltip);
 
 		if (arguments.length == 0) {
-			zwc = new WindowCollection(show_status_panel_in());
+			zwc = new WindowCollection([ 'folderPaneBox', 'addressbookWindow' ]);
 			zwc.populate();
 		}
 
