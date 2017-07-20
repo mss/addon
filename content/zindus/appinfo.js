@@ -29,7 +29,7 @@ var AppInfo = {
 	m_app_name_capital  : null,
 	firstcap            : 1, // const ==> first letter capitalised
 	eApp                : new ZinEnum( newObjectWithKeysMatchingValues(
-	                      'thunderbird', 'thunderbird2', 'thunderbird3', 'seamonkey', 'postbox', 'other')),
+	                      'thunderbird', 'thunderbird2', 'thunderbird3', 'seamonkey', 'other')),
 	app_version : function() {
 		if (!this.m_app_version) {
 			let appInfo = Cc["@mozilla.org/xre/app-info;1"].getService(Ci.nsIXULAppInfo);
@@ -42,12 +42,10 @@ var AppInfo = {
 		if (!this.m_m_app_name) {
 			const TB_ID = "{3550f703-e582-4d05-9a08-453d09bdfdc6}";
 			const SM_ID = "{92650c4d-4b8e-4d2a-b7eb-24ecf4f6b63a}";
-			const PB_ID = "postbox@postbox-inc.com";                 // Postbox         (paid)
 			let appInfo = Cc["@mozilla.org/xre/app-info;1"].getService(Ci.nsIXULAppInfo);
 			switch(appInfo.ID) {
 				case TB_ID: this.m_app_name = this.eApp.thunderbird; break;
 				case SM_ID: this.m_app_name = this.eApp.seamonkey;   break;
-				case PB_ID: this.m_app_name = this.eApp.postbox;     break;
 				default:    this.m_app_name = this.eApp.other;       break;
 			}
 		}
@@ -61,7 +59,6 @@ var AppInfo = {
 			let app_name       = this.app_name();
 
 			this.m_is_birthday_field =
-				(app_name == this.eApp.postbox) ||
 				(((app_name == this.eApp.thunderbird) && versionChecker.compare(this.app_version(), "3.0b3pre") >= 0)) ||
 				(((app_name == this.eApp.seamonkey)   && versionChecker.compare(this.app_version(), "2.0b1") >= 0));
 

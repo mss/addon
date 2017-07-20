@@ -33,7 +33,4 @@ overlay chrome://messenger/content/mailWindowOverlay.xul           chrome://zind
 # seamonkey
 overlay chrome://messenger/content/mailWindowOverlay.xul           chrome://zindus/content/mailwindowoverlay-sm.xul application={92650c4d-4b8e-4d2a-b7eb-24ecf4f6b63a}
 
-# postbox
-overlay chrome://messenger/content/mailWindowOverlay.xul           chrome://zindus/content/mailwindowoverlay-tb.xul application=postbox@postbox-inc.com
-
 style   chrome://global/content/customizeToolbar.xul               chrome://zindus/skin/zindus.css

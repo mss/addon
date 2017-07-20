@@ -24,12 +24,10 @@
 function AddressBookTb()  { AddressBook.call(this); this.m_nsIRDFService = null; }
 function AddressBookTb2() { AddressBookTb.call(this);  }
 function AddressBookTb3() { AddressBookTb.call(this);  }
-function AddressBookPb()  { AddressBookTb3.call(this); }
 
 AddressBookTb.prototype  = new AddressBook();
 AddressBookTb2.prototype = new AddressBookTb();
 AddressBookTb3.prototype = new AddressBookTb();
-AddressBookPb.prototype  = new AddressBookTb3();
 
 const kPABDirectory           = 2;                               // dirType ==> mork address book
 const kMDBDirectoryRoot       = "moz-abmdbdirectory://";         // see: nsIAbMDBDirectory.idl
@@ -54,7 +52,6 @@ AddressBook.new = function()
 	switch (version) {
 		case AppInfo.eApp.thunderbird2: ret = new AddressBookTb2(); break;
 		case AppInfo.eApp.thunderbird3: ret = new AddressBookTb3(); break;
-		case AppInfo.eApp.postbox:      ret = new AddressBookPb();  break;
 		default:             ret = new AddressBookTb2(); break;
 	}
 
@@ -958,69 +955,6 @@ AddressBookTb3.prototype.nsIAbMDBCardToKey = function(abCard)
 AddressBookTb3.prototype.directoryProperty = function(elem, property)
 {
 	return elem[property];
-}
-
-// start AddressBookPb.prototype
-//
-AddressBookPb.prototype.newAddressBook = function(name)
-{
-	var prefkey = this.nsIAddressBook().newAddressBook(name, "", kPABDirectory);
-	var prefs   = new MozillaPreferences("");
-	var uri     = kMDBDirectoryRoot + prefs.getCharPrefOrNull(prefs.branch(), prefkey + ".filename");
-
-	AddressBook.prototype.newAddressBook.call(this);
-
-	return new AddressBookImportantProperties(uri, prefkey);
-}
-
-AddressBookPb.prototype.lookupCard = function(uri, key, value)
-{
-	zinAssert(uri);
-	zinAssert(key);
-	zinAssert(value);
-
-	var dir    = this.nsIAbDirectory(uri);
-	var mdbdir = dir.QueryInterface(Ci.nsIAbMDBDirectory);
-	var abCard = mdbdir.database.getCardFromAttribute(dir, key, value, false);
-
-	// this.logger().debug("lookupCard: blah: uri: " + uri + " key: " + key + " value: " + value +
-	//                     " returns: " + this.nsIAbCardToPrintableVerbose(abCard));
-
-	return abCard; // an nsIABCard
-}
-
-AddressBookPb.prototype.forEachCardGenerator = function(uri, functor, yield_count)
-{
-	var dir       = this.nsIAbDirectory(uri);
-	var fContinue = true;
-	var count     = 0;
-	var enm       = dir.childCards;
-
-	while (fContinue && enm.hasMoreElements()) {
-		let item = enm.getNext();
-
-		fContinue = functor.run(uri, item);
-
-		zinAssert(typeof(fContinue) == "boolean"); // catch programming errors where the functor hasn't returned a boolean
-
-		if (yield_count > 0) {
-			if (++count % yield_count == 0)
-				yield true;
-		}
-	}
-
-	yield false;
-}
-
-// Postbox forked Thunderbird somewhere between Tb2 and Tb3
-// here we adjust methods in the AddressBook subclass to suit.
-{
-	let a_tb2_methods = newObjectWithKeys('nsIAbDirectory', 'nsIAddressBook', 'addCard', 'updateCard', 'setCardProperties',
-	                                  'setCardAttributes', 'getCardAttributes', 'getCardProperty', 'deleteAddressBook', 'deleteCards',
-									  'getAddressBookIterator');
-	let i;
-	for (i in a_tb2_methods)
-		AddressBookPb.prototype[i] = AddressBookTb2.prototype[i];
 }
 
 function AddressBookImportantProperties(uri, prefId)
