@@ -9752,13 +9752,15 @@ SyncFsm.prototype.initialise = function(id_fsm, is_attended, sfcd)
 
 SyncFsm.zimbraSoapUrl = function(url)
 {
-	url = url.replace(/^(https?:\/\/.+?\/).*$/, "$1"); // if the user provided http;//zimbra.example.com/blah ... strip off "blah"
+	url = url.trim();
+	if (url.indexOf("://") == -1)
+		url = "https://" + url;
 
-	let ret = str_with_trailing(url, '/') + "service/soap/";
+	url = str_with_trailing(url, '/') + "service/soap/";
 
-	// logger().debug("zimbraSoapUrl: returns: " + ret);
+	// logger().debug("zimbraSoapUrl: returns: " + url);
 
-	return ret;
+	return url;
 }
 
 function FsmState()
